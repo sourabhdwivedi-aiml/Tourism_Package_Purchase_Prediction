@@ -5,11 +5,6 @@ on:
   push:
     branches: [ main ]
 
-defaults:
-  run:
-    shell: bash
-    working-directory: Tourism_Package_Purchase_Prediction
-
 jobs:
 
   register-dataset:
@@ -17,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Uncomment for a one-time sanity check
+      # Uncomment for a one-time sanity check of your workspace
       # - name: Show workspace layout
       #   run: |
       #     pwd
@@ -27,9 +22,9 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.9'     # <-- PINNED to 3.9
+          python-version: '3.9'         # <-- PINNED to 3.9
           cache: 'pip'
-          cache-dependency-path: Tourism_Package_Purchase_Prediction/requirements.txt
+          cache-dependency-path: requirements.txt
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
@@ -48,7 +43,7 @@ jobs:
         with:
           python-version: '3.9'
           cache: 'pip'
-          cache-dependency-path: Tourism_Package_Purchase_Prediction/requirements.txt
+          cache-dependency-path: requirements.txt
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
@@ -67,13 +62,13 @@ jobs:
         with:
           python-version: '3.9'
           cache: 'pip'
-          cache-dependency-path: Tourism_Package_Purchase_Prediction/requirements.txt
+          cache-dependency-path: requirements.txt
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
-      # Optional: MLflow UI (not accessible from GitHub runner)
+      # Optional: MLflow UI (not accessible from GitHub runner, so generally skip)
       # - name: Start MLflow UI (optional)
       #   run: |
       #     nohup mlflow ui --host 127.0.0.1 --port 5000 & 
@@ -82,6 +77,7 @@ jobs:
       - name: Model Building
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          # MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}  # if you use a remote server
         run: python model_building/train.py
 
   deploy-hosting:
@@ -93,7 +89,7 @@ jobs:
         with:
           python-version: '3.9'
           cache: 'pip'
-          cache-dependency-path: Tourism_Package_Purchase_Prediction/requirements.txt
+          cache-dependency-path: requirements.txt
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
