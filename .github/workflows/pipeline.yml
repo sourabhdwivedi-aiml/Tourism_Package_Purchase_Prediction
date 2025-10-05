@@ -3,7 +3,7 @@ name: Tourism Package Purchase Prediction pipeline
 on:
   push:
     branches:
-      - main  # Automatically triggers on push to the main branch
+      - main
 
 jobs:
 
@@ -40,7 +40,7 @@ jobs:
       - name: Start MLflow Server
         run: |
           nohup mlflow ui --host 0.0.0.0 --port 5000 &
-          sleep 5  # Wait for a moment to let the server start
+          sleep 5
       - name: Model Building
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
