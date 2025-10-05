@@ -1,6 +1,4 @@
-```
-name: Week 3 MLS pipeline
-
+name: Tourism Package Purchase Prediction pipeline
 on:
   push:
     branches:
@@ -31,8 +29,7 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: python Tourism_Package_Purchase_Prediction/model_building/prep.py
 
-
-  model-traning:
+  model-training:  # 🔧 Fixed typo: was 'model-traning'
     needs: data-prep
     runs-on: ubuntu-latest
     steps:
@@ -41,17 +38,16 @@ jobs:
         run: pip install -r Tourism_Package_Purchase_Prediction/requirements.txt
       - name: Start MLflow Server
         run: |
-          nohup mlflow ui --host 0.0.0.0 --port 5000 &  # Run MLflow UI in the background
-          sleep 5  # Wait for a moment to let the server starts
+          nohup mlflow ui --host 0.0.0.0 --port 5000 &  # 🔧 Fixed HTML entity &amp; to &
+          sleep 5  # Wait for a moment to let the server start
       - name: Model Building
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: python Tourism_Package_Purchase_Prediction/model_building/train.py
 
-
   deploy-hosting:
     runs-on: ubuntu-latest
-    needs: [model-traning,data-prep,register-dataset]
+    needs: [model-training, data-prep, register-dataset]  # 🔧 Updated job name to match corrected one
     steps:
       - uses: actions/checkout@v3
       - name: Install Dependencies
@@ -60,5 +56,3 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: python Tourism_Package_Purchase_Prediction/hosting/hosting.py
-
-```
