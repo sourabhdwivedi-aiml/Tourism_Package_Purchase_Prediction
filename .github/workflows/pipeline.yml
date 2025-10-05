@@ -23,11 +23,12 @@ jobs:
     needs: register-dataset
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: .
       - name: Install Dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r ../requirements.txt
+        working-directory: model_building
       - name: Run Data Preparation
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
