@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          path: .
       - name: Install Dependencies
         run: pip install -r requirements.txt
       - name: Upload Dataset to Hugging Face Hub
@@ -22,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          path: .
       - name: Install Dependencies
         run: pip install -r requirements.txt
       - name: Run Data Preparation
@@ -34,6 +38,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          path: .
       - name: Install Dependencies
         run: pip install -r requirements.txt
       - name: Model Building and Saving
@@ -52,6 +58,8 @@ jobs:
     needs: [model-training]
     steps:
       - uses: actions/checkout@v3
+        with:
+          path: .
       - name: Install Dependencies
         run: pip install -r requirements.txt
       - name: Download Model Artifact
